@@ -8,7 +8,7 @@ use App\Jobs\UploadCustomersDetailsProcess;
 
 class CustomerDetailsController extends Controller
 {
-    //
+    //Upload Data using UI
     public function index()
     {
         return view('upload-file');
@@ -39,7 +39,7 @@ class CustomerDetailsController extends Controller
         $path = resource_path('temp');
         $files = glob("$path/*.json");
 
-        // Run queue the files data for backgroud job
+        // Dispatch each file date to queue
         foreach ($files as $file) {
 
             $data = json_decode(file($file)[0], true);

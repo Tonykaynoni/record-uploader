@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class UploadCustomersDetailsProcess implements ShouldQueue
@@ -38,22 +39,22 @@ class UploadCustomersDetailsProcess implements ShouldQueue
 
             $age = 0;
             try {
-                $date = date_create($info['date_of_birth']);
-                $newDate = date_format($date, "Y/m/d H:i:s");
+                $var = $info['date_of_birth'];
+                $date = str_replace('/', '-', $var);
+                $newDate = date('Y-m-d', strtotime($date));
 
                 $date1 = Carbon::parse('now');
                 $date2 = Carbon::createMidnightDate(Carbon::parse($newDate)->toDateTimeString());
                 $age = $date1->diffInYears($date2);
 
             } catch (Throwable $e) {
-                // return $age;
+                Log::info("Logging Failed Data " . $info);
             }
 
             if ($this->filterData($age)) {
+                //store unique names into the database
                 if (!CustomersRecord::find(($info['name']))) {
-
                     CustomersRecord::create($info);
-
                 }
             }
 
