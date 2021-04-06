@@ -41,6 +41,7 @@ class CustomerDetailsController extends Controller
 
         // Run queue the files data for backgroud job
         foreach ($files as $file) {
+
             $data = json_decode(file($file)[0], true);
             UploadCustomersDetailsProcess::dispatch($data);
             unlink($file);

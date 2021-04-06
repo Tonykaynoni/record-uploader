@@ -36,9 +36,6 @@ class UploadCustomersDetailsProcess implements ShouldQueue
         //
         foreach ($this->data as $info) {
 
-            // $date1 = Carbon::parse('now');
-            // $date2 = Carbon::createMidnightDate(Carbon::parse($info['date_of_birth'] ?? now())->toDateTimeString());
-            // $age = $date1->diffInYears($date2);
             $age = 0;
             try {
                 $date = date_create($info['date_of_birth']);
@@ -53,7 +50,11 @@ class UploadCustomersDetailsProcess implements ShouldQueue
             }
 
             if ($this->filterData($age)) {
-                CustomersRecord::create($info);
+                if (!CustomersRecord::find(($info['name']))) {
+
+                    CustomersRecord::create($info);
+
+                }
             }
 
         }
