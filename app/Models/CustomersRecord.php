@@ -10,7 +10,7 @@ class CustomersRecord extends Eloquent
     use HasFactory;
     protected $connection = 'mongodb';
     protected $collection = 'customers_records';
-    protected $primaryKey = 'name';
+    protected $primaryKey = 'email';
     protected $guarded = [];
 
 }
