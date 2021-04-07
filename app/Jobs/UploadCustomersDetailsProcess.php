@@ -52,10 +52,8 @@ class UploadCustomersDetailsProcess implements ShouldQueue
             }
 
             if ($this->filterData($age)) {
-                //store unique email into the database
-                if (!CustomersRecord::find(($info['email']))) {
-                    CustomersRecord::create($info);
-                }
+                //store data into the database
+                CustomersRecord::create($info);
             }
 
         }
